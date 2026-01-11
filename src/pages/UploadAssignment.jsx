@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import { useAuth } from "../auth/AuthContext";
+import { submitAssignment } from "../services/api";
 
 export default function UploadAssignment() {
   const { user } = useAuth();
@@ -8,26 +9,23 @@ export default function UploadAssignment() {
   const [subject, setSubject] = useState("");
   const [branch, setBranch] = useState("CSE");
   const [year, setYear] = useState(1);
+  const submitAssignmentHandler = async () => {
+  if (!file) return alert("Select a file");
 
-  const submitAssignment = async () => {
-    if (!file) return alert("Please select a file");
+  await submitAssignment({
+    studentUsername: user.username,
+    studentName: user.username,
+    rollNo: "JNTUH001",
+    branch,
+    year,
+    subject,
+    fileName: file.name
+  });
 
-    await fetch("http://localhost:8080/api/assignments/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        studentUsername: user.username,
-        studentName: user.username,
-        rollNo: "JNTUH001",
-        branch,
-        year,
-        subject,
-        fileName: file.name
-      }),
-    });
+  alert("Assignment submitted");
+};
 
-    alert("Assignment submitted successfully");
-  };
+ 
 
   return (
     <DashboardLayout role="Student">

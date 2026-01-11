@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
-
+import { getAllAssignments } from "../services/api";
 export default function FacultyDashboard() {
   const [assignments, setAssignments] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -9,10 +9,7 @@ export default function FacultyDashboard() {
   const [score, setScore] = useState({});
   const [activeStudent, setActiveStudent] = useState(null);
   useEffect(() => {
-  fetch("http://localhost:8080/api/assignments/all")
-    .then(res => res.json())
-    .then(data => setAssignments(data || []))
-    .catch(() => setAssignments([]));
+    getAllAssignments().then(setAssignments);
   }, []);
 
   

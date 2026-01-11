@@ -23,7 +23,7 @@ export default function Login() {
     }
 
     try {
-      const user = await loginUser(username, password);
+      // const user = await loginUser(username, password);
       login(user);
 
       // Role-based redirect

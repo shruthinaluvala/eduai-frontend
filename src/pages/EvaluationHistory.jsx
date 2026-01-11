@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import { useAuth } from "../auth/AuthContext";
-import { getEvaluationHistory, getStudentEvaluationHistory } from "../services/api";
 
 export default function EvaluationHistory() {
   const { user } = useAuth();
