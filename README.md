@@ -78,3 +78,20 @@ git clone https://github.com/shruthinaluvala/eduai-frontend.git
 cd eduai-frontend
 npm install
 npm run dev
+
+📦 Production Build
+npm run build
+
+
+
+
+
+
+
+👩‍💻 Developed By
+
+Naluvala Sruthi
+B.Tech CSE 
+GitHub: https://github.com/shruthinaluvala
+
+⭐ If you like this project, give it a star!
