@@ -1,5 +1,5 @@
 // 🔹 LIVE BACKEND BASE URL (Render)
-const API_BASE_URL = "https://eduai-backend-ez9q.onrender.com/api";
+const API_BASE_URL = "https://eduai-backend-ez9q.onrender.com/api/ai";
 
 
 // ==========================
