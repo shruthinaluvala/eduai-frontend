@@ -3,6 +3,7 @@ import Landing from "./pages/Landing";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import EvaluationHistory from "./pages/EvaluationHistory";
 
 import StudentDashboard from "./pages/StudentDashboard";
 import FacultyDashboard from "./pages/FacultyDashboard";
@@ -77,6 +78,14 @@ export default function App() {
         element={
           <ProtectedRoute role="Faculty">
             <FacultyAnalytics />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/history"
+        element={
+          <ProtectedRoute>
+            <EvaluationHistory />
           </ProtectedRoute>
         }
       />

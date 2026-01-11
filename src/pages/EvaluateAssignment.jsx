@@ -1,83 +1,75 @@
 import { useState } from "react";
-import DashboardLayout from "../components/DashboardLayout";
 import { evaluateAssignment } from "../services/api";
+import DashboardLayout from "../components/DashboardLayout";
+import { useAuth } from "../auth/AuthContext";
 
 export default function EvaluateAssignment() {
-  const [file, setFile] = useState(null);
+  const { user } = useAuth();
+  const [studentAnswer, setStudentAnswer] = useState("");
   const [answerKey, setAnswerKey] = useState("");
-  const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const readFileContent = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsText(file); // TXT for now
-    });
-  };
+  const [result, setResult] = useState(null);
 
   const handleEvaluate = async () => {
-    setError("");
-    setResult("");
-
-    if (!file || !answerKey) {
-      setError("Please upload assignment and provide answer key");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const studentAnswer = await readFileContent(file);
-      const response = await evaluateAssignment(studentAnswer, answerKey);
-      setResult(response);
-    } catch {
-      setError("Evaluation failed");
-    } finally {
-      setLoading(false);
-    }
+    const data = await evaluateAssignment(
+      user.username,
+      studentAnswer,
+      answerKey
+    );
+    setResult(data);
   };
 
   return (
-    <DashboardLayout role="Faculty">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          📁 Upload Assignment for AI Evaluation
-        </h2>
+    <DashboardLayout role="Student">
+      <h2 className="text-2xl font-bold mb-4">
+        AI Assignment Evaluation
+      </h2>
 
-        <input
-          type="file"
-          accept=".txt"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="mb-4"
-        />
+      <textarea
+        className="input mb-3"
+        rows={4}
+        placeholder="Student Answer"
+        value={studentAnswer}
+        onChange={e => setStudentAnswer(e.target.value)}
+      />
 
-        <textarea
-          className="w-full p-3 border rounded mb-4"
-          rows={4}
-          placeholder="Answer Key"
-          value={answerKey}
-          onChange={(e) => setAnswerKey(e.target.value)}
-        />
+      <textarea
+        className="input mb-4"
+        rows={4}
+        placeholder="Answer Key"
+        value={answerKey}
+        onChange={e => setAnswerKey(e.target.value)}
+      />
 
-        {error && <p className="text-red-500 mb-3">{error}</p>}
+      <button onClick={handleEvaluate} className="btn-primary">
+        Evaluate
+      </button>
 
-        <button
-          onClick={handleEvaluate}
-          className="bg-blue-600 text-white px-6 py-2 rounded"
-          disabled={loading}
-        >
-          {loading ? "Evaluating..." : "Evaluate"}
-        </button>
+      {result && (
+        <div className="mt-6 bg-white p-6 rounded shadow">
+          <h3 className="text-xl font-bold mb-4">
+            Score: {result.score.total}/10
+          </h3>
 
-        {result && (
-          <div className="mt-6 bg-white p-4 rounded shadow">
-            <h3 className="font-bold mb-2">AI Result</h3>
-            <pre className="whitespace-pre-wrap">{result}</pre>
-          </div>
-        )}
-      </div>
+          {Object.entries(result.score).map(
+            ([key, value]) =>
+              key !== "total" && (
+                <div key={key} className="mb-3">
+                  <p className="capitalize font-medium">{key}</p>
+                  <div className="w-full bg-gray-200 h-3 rounded">
+                    <div
+                      className="bg-blue-600 h-3 rounded"
+                      style={{ width: `${value * 10}%` }}
+                    />
+                  </div>
+                </div>
+              )
+          )}
+
+          <pre className="mt-4 whitespace-pre-wrap text-sm bg-gray-50 p-3 rounded">
+            {result.result}
+          </pre>
+        </div>
+      )}
     </DashboardLayout>
   );
 }
