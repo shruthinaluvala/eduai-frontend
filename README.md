@@ -6,17 +6,17 @@ This repository contains the **frontend** of EduAI built using **React + Vite + 
 
 ---
 
-## 🌐 Live Demo
+##  Live Demo
 
-🔗 **Frontend URL:**  
+ **Frontend URL:**  
 https://eduai-frontend-git-main-sruthi-naluvalas-projects.vercel.app
 
-🔗 **Backend API:**  
+ **Backend API:**  
 https://eduai-backend-ez9q.onrender.com
 
 ---
 
-## 🚀 Features
+##  Features
 
 ### 👩‍🎓 Student Features
 - Secure login & signup
@@ -40,7 +40,7 @@ https://eduai-backend-ez9q.onrender.com
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **Frontend:** React, Vite
 - **Styling:** Tailwind CSS
@@ -50,7 +50,7 @@ https://eduai-backend-ez9q.onrender.com
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 ### Landing Page
 <img width="1882" height="861" alt="Screenshot 2026-01-11 202124" src="https://github.com/user-attachments/assets/96e51491-ec36-4580-b0c5-cf9e7ee20ff4" />
@@ -71,7 +71,7 @@ https://eduai-backend-ez9q.onrender.com
 
 ---
 
-## ⚙️ Local Setup
+##  Local Setup
 
 ```bash
 git clone https://github.com/shruthinaluvala/eduai-frontend.git
@@ -79,7 +79,7 @@ cd eduai-frontend
 npm install
 npm run dev
 
-📦 Production Build
+ Production Build
 npm run build
 
 
