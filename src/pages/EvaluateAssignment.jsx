@@ -3,27 +3,37 @@ import DashboardLayout from "../components/DashboardLayout";
 import { evaluateAssignment } from "../services/api";
 
 export default function EvaluateAssignment() {
-  const [studentAnswer, setStudentAnswer] = useState("");
+  const [file, setFile] = useState(null);
   const [answerKey, setAnswerKey] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const readFileContent = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsText(file); // TXT for now
+    });
+  };
+
   const handleEvaluate = async () => {
     setError("");
     setResult("");
 
-    if (!studentAnswer || !answerKey) {
-      setError("Please provide both student answer and answer key");
+    if (!file || !answerKey) {
+      setError("Please upload assignment and provide answer key");
       return;
     }
 
     try {
       setLoading(true);
+      const studentAnswer = await readFileContent(file);
       const response = await evaluateAssignment(studentAnswer, answerKey);
       setResult(response);
-    } catch (err) {
-      setError("AI evaluation failed. Try again.");
+    } catch {
+      setError("Evaluation failed");
     } finally {
       setLoading(false);
     }
@@ -31,67 +41,40 @@ export default function EvaluateAssignment() {
 
   return (
     <DashboardLayout role="Faculty">
-      <div className="max-w-4xl mx-auto">
-
+      <div className="max-w-3xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">
-          🤖 AI Assignment Evaluation
+          📁 Upload Assignment for AI Evaluation
         </h2>
 
-        {/* STUDENT ANSWER */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">
-            Student Answer
-          </label>
-          <textarea
-            className="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500"
-            rows={5}
-            placeholder="Paste student answer here..."
-            value={studentAnswer}
-            onChange={(e) => setStudentAnswer(e.target.value)}
-          />
-        </div>
+        <input
+          type="file"
+          accept=".txt"
+          onChange={(e) => setFile(e.target.files[0])}
+          className="mb-4"
+        />
 
-        {/* ANSWER KEY */}
-        <div className="mb-6">
-          <label className="block font-semibold mb-2">
-            Answer Key
-          </label>
-          <textarea
-            className="w-full p-4 border rounded-lg focus:ring-2 focus:ring-indigo-500"
-            rows={5}
-            placeholder="Paste model answer / answer key..."
-            value={answerKey}
-            onChange={(e) => setAnswerKey(e.target.value)}
-          />
-        </div>
+        <textarea
+          className="w-full p-3 border rounded mb-4"
+          rows={4}
+          placeholder="Answer Key"
+          value={answerKey}
+          onChange={(e) => setAnswerKey(e.target.value)}
+        />
 
-        {/* ERROR */}
-        {error && (
-          <p className="text-red-500 text-center mb-4">
-            {error}
-          </p>
-        )}
+        {error && <p className="text-red-500 mb-3">{error}</p>}
 
-        {/* BUTTON */}
-        <div className="text-center">
-          <button
-            onClick={handleEvaluate}
-            disabled={loading}
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loading ? "Evaluating..." : "Evaluate Assignment"}
-          </button>
-        </div>
+        <button
+          onClick={handleEvaluate}
+          className="bg-blue-600 text-white px-6 py-2 rounded"
+          disabled={loading}
+        >
+          {loading ? "Evaluating..." : "Evaluate"}
+        </button>
 
-        {/* RESULT */}
         {result && (
-          <div className="mt-8 bg-white shadow rounded-lg p-6">
-            <h3 className="font-bold mb-3 text-lg">
-              📊 AI Evaluation Result
-            </h3>
-            <pre className="whitespace-pre-wrap text-gray-700">
-              {result}
-            </pre>
+          <div className="mt-6 bg-white p-4 rounded shadow">
+            <h3 className="font-bold mb-2">AI Result</h3>
+            <pre className="whitespace-pre-wrap">{result}</pre>
           </div>
         )}
       </div>
