@@ -60,7 +60,7 @@ https://eduai-backend-ez9q.onrender.com
 
 
 ### Login and Signup Page
-<img width="1878" height="860" alt="Screenshot 2026-01-12 224006" src="https://github.com/user-attachments/assets/81866f84-235e-49ef-a01a-0acf1373ce82" />
+<img width="1900" height="861" alt="Screenshot 2026-01-12 224346" src="https://github.com/user-attachments/assets/105bab63-568e-4ee9-b134-a933aa396e8a" />
 
 
 <img width="1878" height="860" alt="Screenshot 2026-01-12 224006" src="https://github.com/user-attachments/assets/0429df96-f870-47d3-8c67-b332b71da211" />
