@@ -13,31 +13,43 @@ export default function Login() {
 
   const { login } = useAuth();
   const navigate = useNavigate();
-
   const handleLogin = async () => {
-    setError("");
+  setError("");
 
-    if (!username || !password) {
-      setError("Please enter username and password");
-      return;
+  if (!username || !password) {
+    setError("Please enter username and password");
+    return;
+  }
+
+  try {
+    const user = await loginUser({
+      username,
+      password,
+    });
+
+    console.log("LOGIN RESPONSE:", user); // 🔴 DEBUG LINE
+
+    if (!user || !user.role) {
+      throw new Error("Invalid login response");
     }
 
-    try {
-      // const user = await loginUser(username, password);
-      login(user);
+    login(user);
 
-      // Role-based redirect
-      if (user.role === "Student") {
-        navigate("/student");
-      } else if (user.role === "Faculty") {
-        navigate("/faculty");
-      } else {
-        navigate("/");
-      }
-    } catch (err) {
-      setError("Invalid username or password");
+    const role = user.role.toLowerCase();
+
+    if (role === "student") {
+      navigate("/student");
+    } else if (role === "faculty") {
+      navigate("/faculty");
+    } else {
+      navigate("/");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    setError("Invalid username or password");
+  }
+};
+
 
   return (
     <>

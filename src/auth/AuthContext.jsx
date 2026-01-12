@@ -3,21 +3,17 @@ import { createContext, useContext, useState } from "react";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  // Load user from localStorage on refresh
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("eduai-user"))
+  );
 
-  // Login with full user object from backend
   const login = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("eduai-user", JSON.stringify(userData));
     setUser(userData);
   };
 
-  // Logout
   const logout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("eduai-user");
     setUser(null);
   };
 
@@ -28,7 +24,6 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Custom hook
 export function useAuth() {
   return useContext(AuthContext);
 }
