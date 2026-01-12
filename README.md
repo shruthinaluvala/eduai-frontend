@@ -61,13 +61,23 @@ https://eduai-backend-ez9q.onrender.com
 
 ### Login and Signup Page
 <img width="1898" height="866" alt="Screenshot 2026-01-11 202837" src="https://github.com/user-attachments/assets/88514e00-bdfe-42de-a28d-3ef73299474e" />
-<img width="1890" height="863" alt="Screenshot 2026-01-11 202928" src="https://github.com/user-attachments/assets/876b2b79-3c4a-47b3-bfa6-9dfdefe1eddc" />
+
+<img width="1878" height="860" alt="Screenshot 2026-01-12 224006" src="https://github.com/user-attachments/assets/0429df96-f870-47d3-8c67-b332b71da211" />
 
 
 ### Student Dashboard
+<img width="1915" height="860" alt="Screenshot 2026-01-12 220645" src="https://github.com/user-attachments/assets/23942429-a20e-4948-b530-5ee6cf66b9ea" />
+
+<img width="1915" height="865" alt="Screenshot 2026-01-12 220709" src="https://github.com/user-attachments/assets/e05b7f97-bab1-474e-a1ab-b20fa170d2a8" />
+
+
+<img width="1896" height="839" alt="Screenshot 2026-01-12 220738" src="https://github.com/user-attachments/assets/9d5e5bdf-e10d-4378-a643-12dc93104e9e" />
+
+
 
 ### Faculty Dashboard
-![Faculty Dashboard](screenshots/faculty-dashboard.png)
+<img width="1919" height="865" alt="Screenshot 2026-01-12 221049" src="https://github.com/user-attachments/assets/5ee89c48-1047-4ea2-b891-6de4fb6ec275" />
+
 
 ---
 
