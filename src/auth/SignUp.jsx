@@ -4,28 +4,51 @@ import AuthNavbar from "../components/AuthNavbar.jsx";
 import { registerUser } from "../services/api.js";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     username: "",
     password: "",
-    role: "Student"
+    role: "STUDENT"
   });
 
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const submit = async () => {
     setError("");
 
-    if (!form.username || !form.password) {
+    // 🔐 Validation
+    if (!form.username || !form.password || !form.role) {
       setError("All fields are required");
       return;
     }
 
+    if (form.password.length < 4) {
+      setError("Password must be at least 4 characters");
+      return;
+    }
+
     try {
-      await registerUser(form);
+      setLoading(true);
+
+      await registerUser({
+        username: form.username.trim(),
+        password: form.password,
+        role: form.role // STUDENT or FACULTY
+      });
+
+      alert("Signup successful 🎉");
       navigate("/login");
+
     } catch (err) {
-      setError("User already exists or registration failed");
+      if (err.response?.status === 400) {
+        setError("User already exists");
+      } else {
+        setError("Signup failed. Try again later.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,9 +61,9 @@ export default function SignUp() {
         {/* IMAGE SIDE */}
         <div className="hidden md:flex items-center justify-center p-10">
           <img
-            src="https://img.freepik.com/free-vector/students-studying-online_52683-37720.jpg"
+            src="https://media.istockphoto.com/id/1358014313/photo/group-of-elementary-students-having-computer-class-with-their-teacher-in-the-classroom.jpg"
             alt="signup"
-            className="w-4/5"
+            className="w-4/5 rounded-xl"
           />
         </div>
 
@@ -51,25 +74,6 @@ export default function SignUp() {
             <h2 className="text-3xl font-bold text-center mb-6">
               Join EduAI 🚀
             </h2>
-
-            {/* GOOGLE (UI ONLY) */}
-            <button
-              type="button"
-              className="w-full border py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50"
-            >
-              <img
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                className="w-5"
-                alt="google"
-              />
-              Sign up with Google
-            </button>
-
-            <div className="flex items-center gap-3 my-6">
-              <hr className="flex-1" />
-              <span className="text-gray-400 text-sm">OR</span>
-              <hr className="flex-1" />
-            </div>
 
             {/* USERNAME */}
             <input
@@ -100,8 +104,8 @@ export default function SignUp() {
                 setForm({ ...form, role: e.target.value })
               }
             >
-              <option value="Student">Student</option>
-              <option value="Faculty">Faculty</option>
+              <option value="STUDENT">Student</option>
+              <option value="FACULTY">Faculty</option>
             </select>
 
             {/* ERROR */}
@@ -114,9 +118,12 @@ export default function SignUp() {
             {/* SUBMIT */}
             <button
               onClick={submit}
-              className="btn-primary w-full mt-6"
+              disabled={loading}
+              className={`btn-primary w-full mt-6 ${
+                loading ? "opacity-60 cursor-not-allowed" : ""
+              }`}
             >
-              Create Account
+              {loading ? "Creating account..." : "Create Account"}
             </button>
 
             {/* LOGIN LINK */}
