@@ -1,16 +1,16 @@
-import { API_BASE } from "./config";
+const API_BASE = "https://eduai-backend-ez9q.onrender.com/api";
 
-// ==========================
-// AUTH
-// ==========================
-export async function loginUser(username, password) {
+/* ================= AUTH ================= */
+
+export async function loginUser(credentials) {
   const res = await fetch(`${API_BASE}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify(credentials),
   });
+
   if (!res.ok) throw new Error("Login failed");
-  return res.json();
+  return res.json(); // { username, role }
 }
 
 export async function registerUser(data) {
@@ -19,57 +19,61 @@ export async function registerUser(data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
+
   if (!res.ok) throw new Error("Signup failed");
   return res.json();
 }
 
-// ==========================
-// ASSIGNMENTS
-// ==========================
+/* ================= STUDENT ================= */
+
+// SAFE COUNT (derived from list)
+export async function getStudentAssignments(username) {
+  const res = await fetch(
+    `${API_BASE}/assignments/student/${username}`
+  );
+
+  if (!res.ok) return [];
+  return res.json();
+}
+
 export async function submitAssignment(data) {
   const res = await fetch(`${API_BASE}/assignments/submit`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Submission failed");
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Failed to submit assignment");
+  }
+
+  // backend may not return JSON → safe guard
+  try {
+    return await res.json();
+  } catch {
+    return {};
+  }
 }
 
 export async function getAssignmentCount(username) {
-  const res = await fetch(`${API_BASE}/assignments/count/${username}`);
+  const res = await fetch(
+    `${API_BASE}/assignments/count/${username}`
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch assignment count");
+  }
+
   return res.json();
 }
 
-export async function getStudentAssignments(username) {
-  const res = await fetch(`${API_BASE}/assignments/student/${username}`);
-  return res.json();
-}
 
+/* ================= FACULTY ================= */
+
+// DEMO SAFE
 export async function getAllAssignments() {
   const res = await fetch(`${API_BASE}/assignments/all`);
+  if (!res.ok) return [];
   return res.json();
-}
-
-// ==========================
-// AI EVALUATION
-// ==========================
-export async function evaluateAssignment(studentAnswer, answerKey) {
-  const res = await fetch(`${API_BASE}/ai/evaluate`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ studentAnswer, answerKey }),
-  });
-  if (!res.ok) throw new Error("Evaluation failed");
-  return res.text();
-}
-
-// ==========================
-// (OPTIONAL – ONLY IF USED)
-// ==========================
-export async function getEvaluationHistory() {
-  return [];
-}
-
-export async function getStudentEvaluationHistory() {
-  return [];
 }

@@ -1,70 +1,93 @@
 import { useState } from "react";
-import DashboardLayout from "../components/DashboardLayout";
 import { useAuth } from "../auth/AuthContext";
+import DashboardLayout from "../components/DashboardLayout";
 import { submitAssignment } from "../services/api";
 
 export default function UploadAssignment() {
   const { user } = useAuth();
-  const [file, setFile] = useState(null);
+
   const [subject, setSubject] = useState("");
   const [branch, setBranch] = useState("CSE");
-  const [year, setYear] = useState(1);
-  const submitAssignmentHandler = async () => {
-  if (!file) return alert("Select a file");
+  const [year, setYear] = useState("Year 1");
+  const [message, setMessage] = useState("");
 
-  await submitAssignment({
-    studentUsername: user.username,
-    studentName: user.username,
-    rollNo: "JNTUH001",
-    branch,
-    year,
-    subject,
-    fileName: file.name
-  });
+  const handleSubmit = async () => {
+    if (!subject) {
+      setMessage("❌ Please enter subject");
+      return;
+    }
 
-  alert("Assignment submitted");
-};
+    try {
+      await submitAssignment({
+        username: user.username,
+        title: subject,
+        content: `${branch} - ${year}`,
+      });
 
- 
+      setMessage("✅ Assignment submitted successfully");
+      setSubject("");
+    } catch (err) {
+      setMessage("❌ Submission failed");
+    }
+  };
 
   return (
     <DashboardLayout role="Student">
-      <h3 className="text-xl font-bold mb-4">Upload Assignment</h3>
+      <h2 className="text-2xl font-bold mb-6">Upload Assignment</h2>
 
-      <input
-        type="file"
-        accept=".pdf,.jpg,.jpeg,.txt"
-        onChange={(e) => setFile(e.target.files[0])}
-        className="mb-3"
-      />
+      {/* FILE INPUT (UI ONLY) */}
+      <div className="mb-4">
+        <input type="file" />
+      </div>
 
-      <input
-        placeholder="Subject"
-        className="block border p-2 mb-3"
-        onChange={(e) => setSubject(e.target.value)}
-      />
+      {/* SUBJECT */}
+      <div className="mb-4">
+        <input
+          className="input w-64"
+          placeholder="DBMS"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+        />
+      </div>
 
-      <select onChange={(e) => setBranch(e.target.value)} className="mb-3">
-        <option>CSE</option>
-        <option>IT</option>
-        <option>ECE</option>
-        <option>EEE</option>
-        <option>MECH</option>
-      </select>
+      {/* BRANCH + YEAR */}
+      <div className="flex gap-4 mb-4">
+        <select
+          className="input w-32"
+          value={branch}
+          onChange={(e) => setBranch(e.target.value)}
+        >
+          <option>CSE</option>
+          <option>ECE</option>
+          <option>EEE</option>
+          <option>MECH</option>
+        </select>
 
-      <select onChange={(e) => setYear(e.target.value)} className="mb-3">
-        <option value={1}>Year 1</option>
-        <option value={2}>Year 2</option>
-        <option value={3}>Year 3</option>
-        <option value={4}>Year 4</option>
-      </select>
+        <select
+          className="input w-32"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+        >
+          <option>Year 1</option>
+          <option>Year 2</option>
+          <option>Year 3</option>
+          <option>Year 4</option>
+        </select>
 
-      <button
-        onClick={submitAssignment}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Submit Assignment
-      </button>
+        <button
+          onClick={handleSubmit}
+          className="btn-primary px-6"
+        >
+          Submit Assignment
+        </button>
+      </div>
+
+      {/* MESSAGE */}
+      {message && (
+        <p className="mt-3 font-medium">
+          {message}
+        </p>
+      )}
     </DashboardLayout>
   );
 }
