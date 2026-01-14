@@ -67,13 +67,11 @@ https://eduai-backend-ez9q.onrender.com
 
 
 ### Student Dashboard
-<img width="1915" height="863" alt="Screenshot 2026-01-14 224916" src="https://github.com/user-attachments/assets/b0f85a28-23d9-4090-a4a0-d75ba7c07505" />
+<img width="1915" height="863" alt="Screenshot 2026-01-14 224916" src="https://github.com/user-attachments/assets/b6feb025-4901-44bf-95c8-e70be1877d4d" />
 
-<img width="1912" height="866" alt="Screenshot 2026-01-14 224937" src="https://github.com/user-attachments/assets/6527fc99-68bf-49bc-ab96-7682f3007c9b" />
+<img width="1912" height="866" alt="Screenshot 2026-01-14 224937" src="https://github.com/user-attachments/assets/597a18ad-9f03-424a-bb14-eec31e64c38a" />
 
-
-<img width="1896" height="839" alt="Screenshot 2026-01-12 220738" src="https://github.com/user-attachments/assets/9d5e5bdf-e10d-4378-a643-12dc93104e9e" />
-
+<img width="1918" height="835" alt="Screenshot 2026-01-14 225140" src="https://github.com/user-attachments/assets/ac5cdade-f034-4161-a0e8-aaace336c7c9" />
 
 
 ### Faculty Dashboard
