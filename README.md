@@ -75,7 +75,7 @@ https://eduai-backend-ez9q.onrender.com
 
 
 ### Faculty Dashboard
-<img width="1919" height="865" alt="Screenshot 2026-01-12 221049" src="https://github.com/user-attachments/assets/5ee89c48-1047-4ea2-b891-6de4fb6ec275" />
+<img width="1912" height="857" alt="Screenshot 2026-01-14 225954" src="https://github.com/user-attachments/assets/35c230ee-15ad-4f0b-87c7-e76949239d39" />
 
 
 ---
