@@ -42,6 +42,10 @@ useEffect(() => {
     ? Math.round(scores.reduce((s, a) => s + a.score, 0) / scores.length)
     : "-";
     
+  const submittedCount = assignments.filter(
+  a => a.status === "SUBMITTED"
+  ).length;
+  
   return (
     <DashboardLayout role="Student">
       <h2 className="text-2xl font-bold mb-6">Student Dashboard</h2>

@@ -15,37 +15,29 @@ export default function UploadAssignment({ onSubmitted }) {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    if (!subject.trim()) {
-      setMessage("❌ Please enter subject");
-      return;
-    }
+  if (!subject) {
+    setMessage("❌ Please enter subject");
+    return;
+  }
 
-    try {
-      setLoading(true);
-      setMessage("");
+  try {
+    await submitAssignment({
+      studentUsername: user.username,   // ✅ FIX
+      title: subject,
+      content: `${branch} - ${year}`,
+      branch: branch,
+      year: Number(year.replace("Year ", "")), // "Year 2" → 2
+      status: "SUBMITTED"
+    });
 
-      await submitAssignment({
-        username: user.username,
-        title: subject,
-        content: `${branch} - ${year}`,
-      });
+    setMessage("✅ Assignment submitted successfully");
+    setSubject("");
+  } catch (err) {
+    console.error(err);
+    setMessage("❌ Submission failed");
+  }
+};
 
-      setMessage("✅ Assignment submitted successfully");
-
-      // reset form
-      setSubject("");
-
-      // 🔥 IMPORTANT: refresh dashboard stats
-      if (onSubmitted) {
-        onSubmitted();
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Submission failed");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <DashboardLayout role="Student">
