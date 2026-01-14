@@ -19,7 +19,7 @@ export default function Analytics() {
   const { user } = useAuth();
   const [assignments, setAssignments] = useState([]);
   useEffect(() => {
-  fetch("http://localhost:8080/api/assignments/all")
+  fetch("https://eduai-backend-ez9q.onrender.com/api/assignments/all")
     .then(res => res.json())
     .then(data => setAssignments(data || []))
     .catch(() => setAssignments([]));

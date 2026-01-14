@@ -2,22 +2,28 @@ import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import DashboardLayout from "../components/DashboardLayout";
 import { submitAssignment } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
-export default function UploadAssignment() {
+export default function UploadAssignment({ onSubmitted }) {
   const { user } = useAuth();
 
   const [subject, setSubject] = useState("");
   const [branch, setBranch] = useState("CSE");
   const [year, setYear] = useState("Year 1");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    if (!subject) {
+    if (!subject.trim()) {
       setMessage("❌ Please enter subject");
       return;
     }
 
     try {
+      setLoading(true);
+      setMessage("");
+
       await submitAssignment({
         username: user.username,
         title: subject,
@@ -25,9 +31,19 @@ export default function UploadAssignment() {
       });
 
       setMessage("✅ Assignment submitted successfully");
+
+      // reset form
       setSubject("");
+
+      // 🔥 IMPORTANT: refresh dashboard stats
+      if (onSubmitted) {
+        onSubmitted();
+      }
     } catch (err) {
+      console.error(err);
       setMessage("❌ Submission failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,6 +74,7 @@ export default function UploadAssignment() {
           onChange={(e) => setBranch(e.target.value)}
         >
           <option>CSE</option>
+          <option>IT</option>
           <option>ECE</option>
           <option>EEE</option>
           <option>MECH</option>
@@ -76,9 +93,10 @@ export default function UploadAssignment() {
 
         <button
           onClick={handleSubmit}
+          disabled={loading}
           className="btn-primary px-6"
         >
-          Submit Assignment
+          {loading ? "Submitting..." : "Submit Assignment"}
         </button>
       </div>
 

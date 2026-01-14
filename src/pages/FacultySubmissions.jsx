@@ -5,13 +5,13 @@ export default function FacultySubmissions() {
   const [assignments, setAssignments] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/assignments/all")
+    fetch("https://eduai-backend-ez9q.onrender.com/api/assignments/all")
       .then(res => res.json())
       .then(setAssignments);
   }, []);
 
   const review = (index) => {
-    fetch(`http://localhost:8080/api/assignments/review/${index}`, {
+    fetch(`https://eduai-backend-ez9q.onrender.com/api/assignments/review/${index}`, {
       method: "POST",
       body: "Reviewed by faculty",
       headers: { "Content-Type": "text/plain" }
@@ -20,7 +20,7 @@ export default function FacultySubmissions() {
 
   const grade = (index) => {
     const score = prompt("Enter score (0-10)");
-    fetch(`http://localhost:8080/api/assignments/grade/${index}`, {
+    fetch(`https://eduai-backend-ez9q.onrender.com/api/assignments/grade/${index}`, {
       method: "POST",
       body: score,
       headers: { "Content-Type": "application/json" }

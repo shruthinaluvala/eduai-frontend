@@ -9,7 +9,7 @@ export default function FacultyAnalytics() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/assignments/all")
+    fetch("https://eduai-backend-ez9q.onrender.com/api/assignments/all")
       .then(res => res.json())
       .then(data => {
         setStats({
